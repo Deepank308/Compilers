@@ -23,7 +23,7 @@ int printStr(char *S)
 int readInt(int *n)
 {
     char buff[100];
-    int disp, i, num, flag = 0;
+    int disp, i = 0, num, flag = 0;
     // get the input string in the buff array
     asm volatile("syscall"
     : "=a" (disp)
@@ -32,28 +32,27 @@ int readInt(int *n)
     "d"(sizeof(buff))
     : "rcx", "r11", "memory", "cc");
 
-    // check for spaces in the string
-    buff[--disp] = 0x0;
-    i = disp - 1;
-    while(i >= 0 && buff[i--] == ' ');
-    buff[i + 2] = 0x0;
-    disp = i + 2;
-    i = i - 1;
-    while(buff[++i] == ' ');
     // check for negative number
-    if(buff[i++] == '-')
+    if(buff[i] == '-')
+    {
         flag = 1;
+        i++;
+    }
     if(buff[i] >= '0' && buff[i] <= '9')
-        num = buff[i++] - '0';
+    {
+        num = buff[i] - '0';
+        i++;
+    }
     // Return error if not integer
     else
         return ERR;
     // store the number and return the pointer
-    while(i < disp)
+    while(i < disp - 1)
     {
         if(buff[i] < '0' || buff[i] > '9')
             return ERR;
         num = num*10 + buff[i] - '0';
+        i++;
     }
     // if negative multiply with -1
     if(flag == 1)
@@ -64,11 +63,14 @@ int readInt(int *n)
 
 int printInt(int n)
 {
-    char buff[20], zero = '0';
+    char buff[20], zero = '0', temp;
     int i = 0, j = 0, bytes, k;
     // if n is zero, put zero and print
     if(n == 0)
-        buff[i++] = zero;
+    {
+        buff[i] = zero;
+        i += 1;
+    }
     // add negative sign if negative
     if(n < 0)
     {
@@ -77,7 +79,7 @@ int printInt(int n)
         i = i + 1;
     }
     // get digit by digit and add to the print buffer
-    while(1)
+    for(;;)
     {
         if(n == 0)
             break;
@@ -90,12 +92,11 @@ int printInt(int n)
     k = i - 1;
     bytes = i;
     // reverse the buffer string
-    while(j < k)
+    for(; j < k; j++, k--)
     {
-        char temp;
         temp = buff[j];
-        buff[j++] = buff[k];
-        buff[k--] = temp;
+        buff[j] = buff[k];
+        buff[k] = temp;
     }
     // assembly code to print the integer
     __asm__ __volatile__(
@@ -111,8 +112,8 @@ int printInt(int n)
 int readFlt(float *f)
 {
     char buff[100];
-    int disp, i, int_p, flag = 0, flag2 = 0;
-    float fac = 0.1, dec_p = 0, ans;
+    int disp, i = 0, int_p, flag = 0, flag2 = 0;
+    float fac = 0.1, dec_p = 0.0, ans;
     // assembly code to scan number
     asm volatile("syscall"
     : "=a" (disp)
@@ -120,49 +121,47 @@ int readFlt(float *f)
     "S" (buff), "d" (sizeof(buff))
     : "rcx", "r11", "memory", "cc");
 
-    // remove the spaces
-    buff[--disp] = 0x0;
-    i = disp - 1;
-    while(i >= 0 && buff[i--] == ' ');
-    buff[i + 2] = 0x0;
-    disp = i + 2;
-    i = i - 1;
-    while(buff[++i] == ' ');
-    if(buff[i++] == '-')
+    if(buff[i] == '-')
+    {
         flag = 1;
+        i++;
+    }
     if(buff[i] >= '0' && buff[i] <= '9')
-        int_p = buff[i++] - '0';
+    {
+        int_p = buff[i] - '0';
+        i++;
+    }
     else if(buff[i] == '.')
     {
-        i = i + 1;
         flag2 = 1;
+        i++;
     }
     else
         return ERR;
     // build the number digit by digit
-    while(i < disp)
+    while(i < disp - 1)
     {
         if(buff[i] == '.')
         {
             if(flag2 == 1) return ERR;
             flag2 = 1;
-            continue;
         }
         else if(buff[i] < '0' || buff[i] > '9')
             return ERR;
-        else if(flag2 == 1)
+        else if(flag2 == 0)
+            int_p = int_p*10 + buff[i] - '0';
+        else
         {
             dec_p = dec_p + fac*(buff[i] - '0');
             fac = fac*0.1;
         }
-        else
-            int_p = int_p*10 + buff[i] - '0';
+        i++;
     }
     // add the integer and decimal part 
     ans = int_p + dec_p;
     // if number is negative
     if(flag == 1)
-        ans = -1*ans;
+        ans = -1.0*ans;
     *f = ans;
     return OK;
 }
@@ -170,33 +169,29 @@ int readFlt(float *f)
 int printFlt(float f)
 {
     // store the integer and floating part
-    int int_p = (int)f;
     int i = 1, length = 7;
+    int int_p = (int)f;
     float dec_p = f - (float)int_p;
     // char array to store the decimal part
     char buff[20];
     // if number is negative, print the minus sign
     if(int_p == 0 && f < 0)
-        printStr('-');
+        printStr("-"); 
     // store the length to return
     length = length + printInt(int_p);
-    if(dec_p < 0) dec_p = -1*dec_p;
+    if(dec_p < 0) dec_p = -dec_p;
     buff[0] = '.';
     // get decimal digit by digit
-    while(dec_p > 0 && i < 7)
+    for(; dec_p > 0 && i < 7; i++)
     {
         dec_p = dec_p*10;
         int_p = (int)dec_p;
         buff[i] = int_p + '0';
-        dec_p = dec_p - (float)int_p;
-        i = i + 1;
+        dec_p = dec_p - int_p;
     }
     // add trailing zeros, if any
-    while(i < 7)
-    {
+    for(; i < 7; i++)
         buff[i] = '0';
-        i = i + 1;
-    }
     // add null string at the end
     buff[i] = '\0';
     printStr(buff);

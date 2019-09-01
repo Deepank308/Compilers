@@ -4,9 +4,9 @@
 int main()
 {
     float flt;
-    int choice, integer;
-    // provide user list of choices
-    while(1)
+    int action, intgr;
+    // provide user list of actions
+    for(;;)
     {
         printStr("\nProvide command to execute:\n");
         printStr("1. Read Integer\n");
@@ -15,23 +15,23 @@ int main()
         printStr("4. Print Float\n");
         printStr("5. Quit\n");
 
-        printStr("Enter choice: \n");
-        if(readInt(&choice) == ERR)
+        printStr("Enter action: \n");
+        if(readInt(&action) == ERR)
         {
-            printStr("Invalid choice, re-enter: ");
+            printStr("Invalid action, re-enter: ");
             continue;
         }
-        if(choice == 5) break;
+        if(action == 5) break;
         // perform action based on user command
-        switch(choice)
+        switch(action)
         {
             case 1: printStr("Enter int: ");
-                    if(readInt(&integer) == ERR)
+                    if(readInt(&intgr) == ERR)
                         printStr("ERR: The integer is not valid.\n");
                     else
                         printStr("Integer read.\n");
                     break;
-            case 2: printInt(integer);
+            case 2: printInt(intgr);
                     break;
             case 3: printStr("Enter float: ");
                     if(readFlt(&flt) == ERR)
