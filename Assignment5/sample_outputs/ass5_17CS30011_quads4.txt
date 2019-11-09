@@ -1,0 +1,133 @@
+
++++++++++++++++++++++++++++++++ Global Symbol Table +++++++++++++++++++++++++++++++
+
+                Name       Initial Value                Size              Offset        Nested Table              Type
+
+  multiply_time_pass                null                   0                   0                   a           function 
+   do_not_what_it_is                null                   0                   0                   a           function 
+                main                null                   0                   0              retVal           function 
+
++++++++++++++++++++++++++++++++ multiply_time_pass Symbol Table +++++++++++++++++++++++++++++++ 
+
+                Name       Initial Value                Size              Offset        Nested Table              Type
+
+                   a                null                   8                   0                null             double 
+                   b                null                   4                   8                null                int 
+              retVal                null                   8                  12                null             double 
+                 ans                null                   8                  20                null             double 
+                 t19                null                   8                  28                null             double 
+                 t20                null                   8                  36                null             double 
+                 t21                null                   8                  44                null             double 
+                 t22                null                   8                  52                null             double 
+                 t23                null                   8                  60                null             double 
+                 t24                null                   8                  68                null             double 
+                 t25                null                   4                  76                null                int 
+                 t26                null                   8                  80                null             double 
+                 t27                null                   8                  88                null             double 
+                 t28                null                   8                  96                null             double 
+                 t29                null                   8                 104                null             double 
+
++++++++++++++++++++++++++++++++ do_not_what_it_is Symbol Table +++++++++++++++++++++++++++++++ 
+
+                Name       Initial Value                Size              Offset        Nested Table              Type
+
+                   a                null                   4                   0                null                int 
+                   b                null                   8                   4                null             double 
+                   c                null                   1                  12                null               char 
+              retVal                null                   1                  13                null               char 
+                  kt                   0                    8                  14                null             double 
+                 t30                null                   1                  22                null               char 
+                   p                   1                  23                null                ptr char 
+                 t31                null                   8                  24                null             double 
+                 t32                null                   8                  32                null             double 
+                   i                   0                    4                  40                null                int 
+
++++++++++++++++++++++++++++++++ main Symbol Table +++++++++++++++++++++++++++++++ 
+
+                Name       Initial Value                Size              Offset        Nested Table              Type
+
+              retVal                null                   4                   0                null                int 
+                  t0                null                   4                   4                null                int 
+                   n                   9                    4                   8                null                int 
+                  t1                null                   4                  12                null                int 
+                  t2                null                   4                  16                null                int 
+                  t3                null                   1                  20                null               char 
+                   a                   a                    1                  21                null               char 
+                  t4                null                   1                  22                null               char 
+                   b                   b                    1                  23                null               char 
+                  t5                null                   1                  24                null               char 
+                   c                   c                    1                  25                null               char 
+                  t6                null                   4                  26                null                int 
+                  t7                null                   4                  30                null                int 
+                  dp                null                2400                  34                null              array 20 array 15 double 
+                  t8                null                   1                2434                null               char 
+                   d                   1                2435                null                ptr char 
+                  t9                null                   4                2436                null                int 
+                   k                   9                    4                2440                null                int 
+                 t10                null                   4                2444                null                int 
+                 t11                null                   4                2448                null                int 
+                   l                   0                    4                2452                null                int 
+                 t12                null                   4                2456                null                int 
+                   i                  50                    4                2460                null                int 
+                 t13                null                   4                2464                null                int 
+                   p                   4                2468                null                ptr int 
+                 t14                null                   1                2472                null               char 
+                   a                   a                    1                2473                null               char 
+                 t15                null                   4                2474                null                int 
+                 ans                  90                    4                2478                null                int 
+                 t16                null                   4                2482                null                int 
+                 t17                null                   4                2486                null                int 
+                 t18                null                   4                2490                null                int 
+100 main : 
+101 t0 = 9
+102 t1 = 0
+103 if n >= t1 goto 6
+104 goto 25
+105 goto 27
+106 t2 = 10
+107 if n <= t2 goto 10
+108 goto 22
+109 goto 24
+110 t3 = a
+111 t4 = b
+112 t5 = c
+113 t6 = 20
+114 t7 = 15
+115 t8 = & a
+116 t9 = 9
+117 t10 = 10
+118 t11 = k + t10
+119 t12 = 50
+120 t13 = & i
+121 goto 27
+122 t14 = a
+123 t15 = 90
+124 goto 27
+125 t16 = 0
+126 return t16
+127 t17 = 89
+128 n = t17
+129 t18 = 0
+130 return t18
+131 multiply_time_pass : 
+132 t19 = int2dbl(b)
+133 t20 = a * t19
+134 ans = t20
+135 t21 = ans * a
+136 ans = t21
+137 t22 = int2dbl(b)
+138 t23 = t22 * ans
+139 a = t23
+140 t24 = a * a
+141 t25 = b * b
+142 t26 = int2dbl(t25)
+143 t27 = t24 + t26
+144 t28 = ans * ans
+145 t29 = t27 + t28
+146 ans = t29
+147 return ans
+148 do_not_what_it_is : 
+149 t30 = & c
+150 t31 = int2dbl(a)
+151 t32 = t31 + b
+152 return c
